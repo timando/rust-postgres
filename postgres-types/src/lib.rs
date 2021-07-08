@@ -739,7 +739,7 @@ where
 }
 
 
-impl<'a, T> ToSql for &mut 'a T
+impl<'a, T> ToSql for &'a mut T
 where
     T: ToSql,
 {
