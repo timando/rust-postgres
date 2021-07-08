@@ -738,6 +738,26 @@ where
     to_sql_checked!();
 }
 
+
+impl<'a, T> ToSql for &mut 'a T
+where
+    T: ToSql,
+{
+    fn to_sql(
+        &self,
+        ty: &Type,
+        out: &mut BytesMut,
+    ) -> Result<IsNull, Box<dyn Error + Sync + Send>> {
+        (*self).to_sql(ty, out)
+    }
+
+    fn accepts(ty: &Type) -> bool {
+        T::accepts(ty)
+    }
+
+    to_sql_checked!();
+}
+
 impl<T: ToSql> ToSql for Option<T> {
     fn to_sql(
         &self,
